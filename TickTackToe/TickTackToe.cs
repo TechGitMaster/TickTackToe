@@ -35,6 +35,7 @@ namespace TickTackToe
             PositionChange.MouseDown += new System.Windows.Forms.MouseEventHandler(ChangeMouseDown);
             PositionChange.MouseUp += new System.Windows.Forms.MouseEventHandler(ChangeMouseUp);
             PositionChange.MouseMove += new System.Windows.Forms.MouseEventHandler(MovePosition);
+            PlayWithAI.Click += new System.EventHandler(PlayingWithFriend);
             PlayingWithFriends.Click += new System.EventHandler(PlayingWithFriend);
             CreateGame.Click += new System.EventHandler(CreateGameAndCancel);
             CancelCreate.Click += new System.EventHandler(CreateGameAndCancel);
@@ -94,7 +95,17 @@ namespace TickTackToe
         //BUTTON OF PLAYING WITH FRIENDS AND PAYING WITH AI...............................................
 
         private void PlayingWithFriend(object control, EventArgs e) {
-            JarOfPlayerSegment.Visible = true;
+            Control con = (Control)control;
+            if (con.GetType() == typeof(Panel)) {
+                Panel pan = (Panel)con;
+                if (pan.AccessibleName == "PlaywithF")
+                {
+                    JarOfPlayerSegment.Visible = true;
+                }
+                else {
+                    MessageBox.Show("Do A.I");
+                }
+            }
         }
 
         //LOAD FORM..........................................................
@@ -105,17 +116,18 @@ namespace TickTackToe
         protected static string[,] st = { { "panel4", "panel7", "panel10" }, { "panel6", "panel9", "panel12" },
              { "panel4", "panel8", "panel12" }, { "panel6", "panel8", "panel10" }, { "panel5", "panel8", "panel11" },
             { "panel4", "panel5", "panel6" }, { "panel7", "panel8", "panel9" }, { "panel10", "panel11", "panel12" } };
-        protected static System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
-        protected static int numberTime = 60, numberCount = 0, numberHandlePan = 0;
+        protected static System.Windows.Forms.Timer time = new System.Windows.Forms.Timer(), 
+            timer2 = new System.Windows.Forms.Timer();
+        protected static int numberTime = 60, numberCount = 0, numberHandlePan = 0, numberCountIntononeClick = 0;
         protected static string handleXandOS = "", handleNameOfPan = "", stringHandleCondition = "", conditionToNumberCount = "",
-            conditionToAgain = "true";
-
-        protected static string finalCondition = "true";
-        protected delegate void AgainF();
+            conditionToAgain = "true", finalCondition = "true";
+        protected static bool ConditionToNonClick = true;
+        protected delegate void AgainF(string PlayAgain, string ShowWin);
 
         //TIMER.........................................................
         private void LoadForms(object control, EventArgs e) {
-            time.Interval = 300;
+            time.Interval = 100;
+            timer2.Interval = 200;
             time.Tick += (object TControls, EventArgs Te) => {
                 if (numberTime >= 0)
                 {
@@ -136,28 +148,62 @@ namespace TickTackToe
                     }
                 }
                 else {
-                    if (handleNameOfPan == "")
+                    if (ConditionToNonClick != true)
                     {
-                        numberTime = 60;
-                        if (numberCount == 0)
+                        if (handleNameOfPan == "")
                         {
-                            numberCount++;
-                            JarOfNameMove.Text = handleData[numberCount];
-                            handleXandOS = handleXandOA[numberCount];
+                            numberTime = 60;
+                            if (numberCount == 0)
+                            {
+                                numberCount++;
+                                JarOfNameMove.Text = handleData[numberCount];
+                                handleXandOS = handleXandOA[numberCount];
+                            }
+                            else
+                            {
+                                numberCount--;
+                                JarOfNameMove.Text = handleData[numberCount];
+                                handleXandOS = handleXandOA[numberCount];
+                            }
                         }
                         else
                         {
-                            numberCount--;
-                            JarOfNameMove.Text = handleData[numberCount];
-                            handleXandOS = handleXandOA[numberCount];
+                            time.Stop();
+                            if (ConditionToNonClick != true)
+                            {
+                                conditionToNumberCount = "Stop";
+                            }
+                            else {
+                                timer2.Start();
+                            }
                         }
                     }
                     else {
                         time.Stop();
-                        conditionToNumberCount = "Stop";
+                        if (ConditionToNonClick != true)
+                        {
+                            conditionToNumberCount = "Stop";
+                        }
+                        else {
+                            timer2.Start();
+                        }
                     }
                 }
                 numberTime--;
+            };
+
+
+            timer2.Tick += (object controls, EventArgs es) =>
+            {
+                if (numberCountIntononeClick == 0)
+                {
+                    labelTime.Text = "";
+                    numberCountIntononeClick++;
+                }
+                else {
+                    labelTime.Text = "00:00";
+                    numberCountIntononeClick--;
+                }
             };
 
 
@@ -289,6 +335,7 @@ namespace TickTackToe
                                 {
                                     foreach (Label lb in pan.Controls)
                                     {
+                                        ConditionToNonClick = false;
                                         SureMove.Enabled = true;
                                         handleNameOfPan = pan.Name;
                                         lb.Text = handleXandOS;
@@ -299,6 +346,7 @@ namespace TickTackToe
                                 {
                                     foreach (Label lb in pan.Controls)
                                     {
+                                        ConditionToNonClick = true;
                                         SureMove.Enabled = false;
                                         handleNameOfPan = "";
                                         lb.Text = "";
@@ -361,23 +409,8 @@ namespace TickTackToe
                         //GAME ENDED......................................
                         if (numberCountFinal == 3)
                         {
-                            time.Stop();
-                            finalCondition = "false";
-                            handleScore[numberCount]++;
-                            WinnerSee.Text = handleData[numberCount];
-                            for (int count1 = 0; count1 < handleData.Length;count1++) {
-                                if (textBox1.Text == handleData[count1])
-                                {
-                                    Player1.Text = handleData[count1];
-                                    Player1S.Text = handleScore[count1].ToString();
-                                }
-                                else {
-                                    Player2.Text = handleData[count1];
-                                    Player2S.Text = handleScore[count1].ToString();
-                                }
-                            }
-
-                            GameEnded.Visible = true;
+                            AgainF delegateA = new AgainF(FAgain);
+                            delegateA.Invoke("", "ShowWin");
                             break;
                         }
 
@@ -399,6 +432,7 @@ namespace TickTackToe
                                         handleNameOfPan = "";
                                         conditionToNumberCount = "";
                                         SureMove.Enabled = false;
+                                        ConditionToNonClick = true;
                                         numberTime = 60;
                                         time.Stop();
                                         if (numberCount == 0)
@@ -414,10 +448,11 @@ namespace TickTackToe
                                             handleXandOS = handleXandOA[numberCount];
                                         }
                                         time.Start();
+                                        timer2.Stop();
                                     }
                                     else {
                                         AgainF delegateA = new AgainF(FAgain);
-                                        delegateA.Invoke();
+                                        delegateA.Invoke("", "ShowWinsTie");
                                     }
                                 }
                             }
@@ -429,29 +464,55 @@ namespace TickTackToe
 
 
         //DELEGATE AGAIN.................................................
-        protected void FAgain() {
-            numberCount = 0;
-            numberTime = 60;
-            handleXandOS = "";
-            handleXandOS = "X";
-            handleNameOfPan = "";
-            finalCondition = "true";
-            labelTime.Text = "01:00";
-            SureMove.Enabled = false;
-            GameEnded.Visible = false;
-            conditionToAgain = "false";
-            stringHandleCondition = "Start";
-            foreach (Control con in JarOfClickingBox.Controls)
+        protected void FAgain(string PlayAgain, string ShowWin) {
+            if (PlayAgain == "Playagain")
             {
-                if (con.GetType() == typeof(Panel))
+                numberCount = 0;
+                numberTime = 60;
+                handleXandOS = "";
+                handleXandOS = "X";
+                handleNameOfPan = "";
+                finalCondition = "true";
+                labelTime.Text = "01:00";
+                ConditionToNonClick = true;
+                SureMove.Enabled = false;
+                GameEnded.Visible = false;
+                conditionToAgain = "false";
+                stringHandleCondition = "Start";
+                foreach (Control con in JarOfClickingBox.Controls)
                 {
-                    foreach (Label lb in con.Controls)
+                    if (con.GetType() == typeof(Panel))
                     {
-                        con.AccessibleDescription = "";
-                        con.AccessibleName = "";
-                        lb.Text = "";
+                        foreach (Label lb in con.Controls)
+                        {
+                            con.AccessibleDescription = "";
+                            con.AccessibleName = "";
+                            lb.Text = "";
+                        }
                     }
                 }
+            }
+            else if(ShowWin == "ShowWin" || ShowWin == "ShowWinsTie")
+            {
+                time.Stop();
+                finalCondition = "false";
+                handleScore[numberCount] += (ShowWin == "ShowWin" ? 1:0);
+                WinnerSee.Text = (ShowWin == "ShowWin" ? handleData[numberCount]:"Tie");
+                for (int count1 = 0; count1 < handleData.Length; count1++)
+                {
+                    if (textBox1.Text == handleData[count1])
+                    {
+                        Player1.Text = handleData[count1];
+                        Player1S.Text = handleScore[count1].ToString();
+                    }
+                    else
+                    {
+                        Player2.Text = handleData[count1];
+                        Player2S.Text = handleScore[count1].ToString();
+                    }
+                }
+
+                GameEnded.Visible = true;
             }
         }
 
@@ -459,7 +520,7 @@ namespace TickTackToe
         //PLAY AGAIN BUTTON.....................................................
         private void PlayAgains(object control, EventArgs e) {
             AgainF delegateA = new AgainF(FAgain);
-            delegateA.Invoke();
+            delegateA.Invoke("Playagain", "");
         }
 
 
@@ -477,6 +538,7 @@ namespace TickTackToe
             finalCondition = "true";
             labelTime.Text = "01:00";
             conditionToAgain = "true";
+            ConditionToNonClick = true;
             stringHandleCondition = "";
             conditionToNumberCount = "";
 

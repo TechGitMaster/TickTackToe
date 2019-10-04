@@ -34,7 +34,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.PlayingWithFriends = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.PlayWithAI = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.JarOfPlayerSegment = new System.Windows.Forms.Panel();
             this.CancelCreate = new System.Windows.Forms.Button();
@@ -88,7 +88,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.PlayingWithFriends.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.PlayWithAI.SuspendLayout();
             this.JarOfPlayerSegment.SuspendLayout();
             this.GamePanel.SuspendLayout();
             this.GameEnded.SuspendLayout();
@@ -138,7 +138,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.PlayingWithFriends);
-            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.PlayWithAI);
             this.panel1.Location = new System.Drawing.Point(32, 134);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(260, 267);
@@ -146,6 +146,7 @@
             // 
             // PlayingWithFriends
             // 
+            this.PlayingWithFriends.AccessibleName = "PlaywithF";
             this.PlayingWithFriends.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(219)))), ((int)(((byte)(219)))));
             this.PlayingWithFriends.Controls.Add(this.label3);
             this.PlayingWithFriends.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -164,15 +165,16 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "Play With Friends";
             // 
-            // panel2
+            // PlayWithAI
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(219)))), ((int)(((byte)(219)))));
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel2.Location = new System.Drawing.Point(41, 40);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(170, 55);
-            this.panel2.TabIndex = 2;
+            this.PlayWithAI.AccessibleName = "PlaywithA";
+            this.PlayWithAI.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(219)))), ((int)(((byte)(219)))));
+            this.PlayWithAI.Controls.Add(this.label2);
+            this.PlayWithAI.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PlayWithAI.Location = new System.Drawing.Point(41, 40);
+            this.PlayWithAI.Name = "PlayWithAI";
+            this.PlayWithAI.Size = new System.Drawing.Size(170, 55);
+            this.PlayWithAI.TabIndex = 2;
             // 
             // label2
             // 
@@ -194,9 +196,9 @@
             this.JarOfPlayerSegment.Controls.Add(this.textBox1);
             this.JarOfPlayerSegment.Controls.Add(this.label5);
             this.JarOfPlayerSegment.Controls.Add(this.label4);
-            this.JarOfPlayerSegment.Location = new System.Drawing.Point(14, 98);
+            this.JarOfPlayerSegment.Location = new System.Drawing.Point(14, 113);
             this.JarOfPlayerSegment.Name = "JarOfPlayerSegment";
-            this.JarOfPlayerSegment.Size = new System.Drawing.Size(296, 325);
+            this.JarOfPlayerSegment.Size = new System.Drawing.Size(296, 310);
             this.JarOfPlayerSegment.TabIndex = 4;
             this.JarOfPlayerSegment.Visible = false;
             // 
@@ -283,9 +285,9 @@
             this.GamePanel.Controls.Add(this.label19);
             this.GamePanel.Controls.Add(this.JarOfNameMove);
             this.GamePanel.Controls.Add(this.label16);
-            this.GamePanel.Location = new System.Drawing.Point(11, 87);
+            this.GamePanel.Location = new System.Drawing.Point(11, 96);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(302, 351);
+            this.GamePanel.Size = new System.Drawing.Size(302, 342);
             this.GamePanel.TabIndex = 8;
             this.GamePanel.Visible = false;
             // 
@@ -722,8 +724,8 @@
             this.panel1.ResumeLayout(false);
             this.PlayingWithFriends.ResumeLayout(false);
             this.PlayingWithFriends.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.PlayWithAI.ResumeLayout(false);
+            this.PlayWithAI.PerformLayout();
             this.JarOfPlayerSegment.ResumeLayout(false);
             this.JarOfPlayerSegment.PerformLayout();
             this.GamePanel.ResumeLayout(false);
@@ -762,7 +764,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel PlayingWithFriends;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel PlayWithAI;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel JarOfPlayerSegment;
         private System.Windows.Forms.TextBox textBox2;
