@@ -11,9 +11,10 @@ C:\Users\Kyle_velarde\Desktop\Microsoft c# system\TickTackToe\TickTackToe\TickTa
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\bin\Debug\TickTackToe.exe.config
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\bin\Debug\TickTackToe.exe
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\bin\Debug\TickTackToe.pdb
-C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.Form1.resources
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.Properties.Resources.resources
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.csproj.GenerateResource.cache
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.csproj.CoreCompileInputs.cache
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.exe
 C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.pdb
+C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.csprojAssemblyReference.cache
+C:\Users\Kyle_velarde\Desktop\Microsoft c# system\GitHubTickTackToe\TickTackToe\TickTackToe\obj\Debug\TickTackToe.TickTackTie.resources

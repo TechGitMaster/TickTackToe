@@ -1,6 +1,6 @@
 ﻿namespace TickTackToe
 {
-    partial class Form1
+    partial class TickTackTie
     {
         /// <summary>
         /// Required designer variable.
@@ -704,7 +704,7 @@
             this.label16.TabIndex = 11;
             this.label16.Text = "Player move:";
             // 
-            // Form1
+            // TickTackTie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -716,7 +716,7 @@
             this.Controls.Add(this.EraseTheForm);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
+            this.Name = "TickTackTie";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);

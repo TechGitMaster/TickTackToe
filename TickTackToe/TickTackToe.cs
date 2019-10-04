@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace TickTackToe
 {
-    public partial class Form1 : Form
+    public partial class TickTackTie : Form
     {
 
         protected override CreateParams CreateParams
@@ -26,7 +26,7 @@ namespace TickTackToe
 
         protected static Point point = new Point(0, 0);
 
-        public Form1()
+        public TickTackTie()
         {
             InitializeComponent();
 
@@ -111,6 +111,7 @@ namespace TickTackToe
             conditionToAgain = "true";
 
         protected static string finalCondition = "true";
+        protected delegate void AgainF();
 
         //TIMER.........................................................
         private void LoadForms(object control, EventArgs e) {
@@ -177,43 +178,64 @@ namespace TickTackToe
 
             if (bttn.AccessibleName != "Cancel")
             {
-                foreach (Control TextBoxCheck in JarOfPlayerSegment.Controls)
+                if (textBox1.Text != "" && textBox2.Text != "")
                 {
-                    if (TextBoxCheck.GetType() == typeof(TextBox))
+                    bool cond = true;
+                    if (textBox1.Text == textBox3.Text || textBox2.Text == textBox3.Text)
                     {
-                        numberCount++;
-                        if (TextBoxCheck.AccessibleName != "FirstMove")
+                        cond = true;
+                    }
+                    else {
+                        cond = false;
+                    }
+                    if (cond == true)
+                    {
+                        foreach (Control TextBoxCheck in JarOfPlayerSegment.Controls)
                         {
-                            if (FirstMoveHandle == TextBoxCheck.Text)
+                            if (TextBoxCheck.GetType() == typeof(TextBox))
                             {
-                                handleData[0] = TextBoxCheck.Text;
-                                handleXandOA[0] = "X";
-                                handleXandOS = handleXandOA[0];
-                            }
-                        }
-
-                        if (numberCount == 3)
-                        {
-                            foreach (Control TextBoxCheck2 in JarOfPlayerSegment.Controls)
-                            {
-                                if (TextBoxCheck2 is TextBox)
+                                numberCount++;
+                                if (TextBoxCheck.AccessibleName != "FirstMove")
                                 {
-                                    if (TextBoxCheck2.AccessibleName != "FirstMove")
+                                    if (FirstMoveHandle == TextBoxCheck.Text)
                                     {
-                                        if (FirstMoveHandle != TextBoxCheck2.Text)
-                                        {
-                                            handleData[1] = TextBoxCheck2.Text;
-                                            handleXandOA[1] = "O";
-                                        }
+                                        handleData[0] = TextBoxCheck.Text;
+                                        handleXandOA[0] = "X";
+                                        handleXandOS = handleXandOA[0];
                                     }
                                 }
-                            }
 
-                            GamePanel.Visible = true;
-                            JarOfPlayerSegment.Visible = false;
-                            JarOfNameMove.Text = FirstMoveHandle;
+                                if (numberCount == 3)
+                                {
+                                    foreach (Control TextBoxCheck2 in JarOfPlayerSegment.Controls)
+                                    {
+                                        if (TextBoxCheck2 is TextBox)
+                                        {
+                                            if (TextBoxCheck2.AccessibleName != "FirstMove")
+                                            {
+                                                if (FirstMoveHandle != TextBoxCheck2.Text)
+                                                {
+                                                    handleData[1] = TextBoxCheck2.Text;
+                                                    handleXandOA[1] = "O";
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    GamePanel.Visible = true;
+                                    JarOfPlayerSegment.Visible = false;
+                                    JarOfNameMove.Text = FirstMoveHandle;
+                                }
+                            }
                         }
                     }
+                    else {
+                        MessageBox.Show("Sorry.... Please select the first move player.............");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Sorry.... The textbox is empty.............");   
                 }
             }
             else {
@@ -362,26 +384,42 @@ namespace TickTackToe
                         if (numberCountAS == 7) {
 
                             if (numberCountFinal != 3) {
-                                Panel pan = (Panel)(JarOfClickingBox.Controls["panel" + numberHandlePan]);
-                                pan.AccessibleDescription = "DoneSureMove";
-                                handleNameOfPan = "";
-                                conditionToNumberCount = "";
-                                SureMove.Enabled = false;
-                                numberTime = 60;
-                                time.Stop();
-                                if (numberCount == 0)
-                                {
-                                    numberCount++;
-                                    JarOfNameMove.Text = handleData[numberCount];
-                                    handleXandOS = handleXandOA[numberCount];
+                                int numCountF1 = 0, numCountF2 = 0;
+                                foreach (Panel panS in JarOfClickingBox.Controls) {
+                                    numCountF1++;
+                                    if (String.IsNullOrEmpty(panS.AccessibleName)) {
+                                        numCountF2 += 1;
+                                    }
                                 }
-                                else
-                                {
-                                    numberCount--;
-                                    JarOfNameMove.Text = handleData[numberCount];
-                                    handleXandOS = handleXandOA[numberCount];
+                                if (numCountF1 == 9) {
+                                    if (numCountF2 != 0)
+                                    {
+                                        Panel pan = (Panel)(JarOfClickingBox.Controls["panel" + numberHandlePan]);
+                                        pan.AccessibleDescription = "DoneSureMove";
+                                        handleNameOfPan = "";
+                                        conditionToNumberCount = "";
+                                        SureMove.Enabled = false;
+                                        numberTime = 60;
+                                        time.Stop();
+                                        if (numberCount == 0)
+                                        {
+                                            numberCount++;
+                                            JarOfNameMove.Text = handleData[numberCount];
+                                            handleXandOS = handleXandOA[numberCount];
+                                        }
+                                        else
+                                        {
+                                            numberCount--;
+                                            JarOfNameMove.Text = handleData[numberCount];
+                                            handleXandOS = handleXandOA[numberCount];
+                                        }
+                                        time.Start();
+                                    }
+                                    else {
+                                        AgainF delegateA = new AgainF(FAgain);
+                                        delegateA.Invoke();
+                                    }
                                 }
-                                time.Start();
                             }
                         }
                     }
@@ -390,8 +428,8 @@ namespace TickTackToe
         }
 
 
-        //PLAY AGAIN BUTTON.....................................................
-        private void PlayAgains(object control, EventArgs e) {
+        //DELEGATE AGAIN.................................................
+        protected void FAgain() {
             numberCount = 0;
             numberTime = 60;
             handleXandOS = "";
@@ -403,15 +441,25 @@ namespace TickTackToe
             GameEnded.Visible = false;
             conditionToAgain = "false";
             stringHandleCondition = "Start";
-            foreach (Control con in JarOfClickingBox.Controls) {
-                if (con.GetType() == typeof(Panel)) {
-                    foreach (Label lb in con.Controls) {
+            foreach (Control con in JarOfClickingBox.Controls)
+            {
+                if (con.GetType() == typeof(Panel))
+                {
+                    foreach (Label lb in con.Controls)
+                    {
                         con.AccessibleDescription = "";
                         con.AccessibleName = "";
                         lb.Text = "";
                     }
                 }
             }
+        }
+
+
+        //PLAY AGAIN BUTTON.....................................................
+        private void PlayAgains(object control, EventArgs e) {
+            AgainF delegateA = new AgainF(FAgain);
+            delegateA.Invoke();
         }
 
 
