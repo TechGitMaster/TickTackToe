@@ -86,6 +86,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.JarOfNameMove = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.PlayingWithFriends.SuspendLayout();
             this.PlayWithAI.SuspendLayout();
@@ -276,6 +277,7 @@
             // 
             // GamePanel
             // 
+            this.GamePanel.Controls.Add(this.textBox4);
             this.GamePanel.Controls.Add(this.GameEnded);
             this.GamePanel.Controls.Add(this.JarOfClickingBox);
             this.GamePanel.Controls.Add(this.SureMove);
@@ -706,6 +708,14 @@
             this.label16.TabIndex = 11;
             this.label16.Text = "Player move:";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(102, 11);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.TabIndex = 20;
+            this.textBox4.Visible = false;
+            // 
             // TickTackTie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -816,6 +826,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button Exit;
         private System.Windows.Forms.Button PlayAgainss;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }
 
