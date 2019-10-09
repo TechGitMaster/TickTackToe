@@ -103,10 +103,10 @@ namespace TickTackToe
              { "panel4", "panel8", "panel12" }, { "panel6", "panel8", "panel10" }, { "panel5", "panel8", "panel11" },
             { "panel4", "panel5", "panel6" }, { "panel7", "panel8", "panel9" }, { "panel10", "panel11", "panel12" } };
         protected static System.Windows.Forms.Timer time = new System.Windows.Forms.Timer(), 
-            timer2 = new System.Windows.Forms.Timer();
+            timer2 = new System.Windows.Forms.Timer(), delay = new System.Windows.Forms.Timer();
         protected static int numberTime = 60, numberCount = 0, numberHandlePan = 0, numberCountIntononeClick = 0;
         protected static string handleXandOS = "", handleNameOfPan = "", stringHandleCondition = "", conditionToNumberCount = "",
-            conditionToAgain = "true", finalCondition = "true";
+            conditionToAgain = "true", finalCondition = "true", conditionFinalCatch = "false";
         protected static bool ConditionToNonClick = true, conditionToAllFunction = true;
         protected delegate void AgainF(string PlayAgain, string ShowWin);
 
@@ -179,7 +179,6 @@ namespace TickTackToe
                 numberTime--;
             };
 
-
             timer2.Tick += (object controls, EventArgs es) =>
             {
                 if (numberCountIntononeClick == 0)
@@ -192,6 +191,10 @@ namespace TickTackToe
                     numberCountIntononeClick--;
                 }
             };
+
+
+            delay.Interval = 400;
+            delay.Tick += new System.EventHandler(TimerDelay);
 
 
 
@@ -327,7 +330,6 @@ namespace TickTackToe
                     if (textBox4.Text != "")
                     {
                         JarOfNameMove.Text = textBox4.Text;
-                        textBox4.Text = "";
                         handleUserAndAi[0] = JarOfNameMove.Text;
                         textBox4.Visible = false;
                         time.Start();
@@ -379,6 +381,7 @@ namespace TickTackToe
                                         else {
                                             lb.Text = "X";
                                             pan.AccessibleName = "X";
+                                            numberCount = 0;
                                         }
                                         }
                                     }
@@ -481,8 +484,12 @@ namespace TickTackToe
             else
             {
                 List<int> intJar = new List<int>(), intJar2 = new List<int>();
+                List<string> ScanningAddPanel = new List<string>();
                 string handlePan = "";
-                int numberRandom= 0;
+                conditionFinalCatch = "false";
+                Random random = new Random();
+
+                int numberRandom = 0, numberConditionScanning = 0;
                 for (int jarCount = 0; jarCount < st.Length; jarCount++)
                 {
                     if (jarCount <= 7) {
@@ -511,37 +518,127 @@ namespace TickTackToe
                             {
                                 handlePan = "";
                                 SeeIfHave(intJar.ToArray()[jarCount3], "Scanning");
-                                if (handlePan != "") {
+                                if (handlePan != "")
+                                {
                                     intJar2.Add(intJar.ToArray()[jarCount3]);
                                 }
+                            }
+                            else if (numberCountFinalSee == 3)
+                            {
+                                conditionFinalCatch = "true";
+                                handleScore[0]++;
+                                WinnerSee.Text = textBox4.Text;
+                                Player1.Text = textBox4.Text;
+                                Player1S.Text = handleScore[0].ToString();
+                                Player2.Text = "A.I";
+                                Player2S.Text = handleScore[1].ToString();
+                                GameEnded.Visible = true;
                             }
 
                             if (jarCount3 >= (intJar.ToArray().Length - 1))
                             {
-                                if (intJar2.ToArray().Length > 0)
-                                {
-                                    if (intJar2.ToArray().Length > 1) {
-                                        Random random = new Random();
-                                        numberRandom = random.Next(0, intJar2.ToArray().Length-1);
-                                    }
-                                    else {
-                                        numberRandom = 0;
-                                    }
+                                if (conditionFinalCatch == "false") {
+                                    if (intJar2.ToArray().Length > 0)
+                                    {
+                                        if (intJar2.ToArray().Length > 1) {
+                                            numberRandom = random.Next(0, intJar2.ToArray().Length - 1);
+                                        }
+                                        else {
+                                            numberRandom = 0;
+                                        }
 
                                         SeeIfHave(numberRandom, "have");
 
-                                            Panel panUser = (Panel)(JarOfClickingBox.Controls[handleNameOfPan]);
-                                            Panel panAI = (Panel)(JarOfClickingBox.Controls[handlePan]);
-                                            panUser.AccessibleDescription = "DoneSureMove";
+                                        numberCount = 1; 
+                                        Panel panUser = (Panel)(JarOfClickingBox.Controls[handleNameOfPan]);
+                                        Panel panAI = (Panel)(JarOfClickingBox.Controls[handlePan]);
+                                        panUser.AccessibleDescription = "DoneSureMove";
 
-                                            foreach (Panel panss in JarOfClickingBox.Controls) {
-                                                if (panss.Name == handlePan) {
-                                                    foreach (Label lbss in panss.Controls) {
-                                                        lbss.Text = "O";
+                                        foreach (Panel panss in JarOfClickingBox.Controls) {
+                                            if (panss.Name == handlePan) {
+                                                foreach (Label lbss in panss.Controls) {
+                                                    lbss.Text = "O";
+                                                }
+                                                panss.AccessibleName = "O";
+                                            }
+                                        }
+                                        panAI.AccessibleDescription = "DoneSureMove";
+
+                                        for (int numberCountASs = 0; numberCountASs <= handleScanning.Length - 1; numberCountASs++)
+                                        {
+                                            if (numberCountASs <= 7)
+                                            {
+
+                                                handleXandOS = "O";
+                                                int countChecks = 0, numberCountFinals = 0;
+                                                int backHandleNum = DoLoopEach(countChecks, numberCountFinals, numberCountASs);
+                                                if (backHandleNum == 3)
+                                                {
+                                                    delay.Start();
+                                                }
+                                            }
+
+                                            if (numberCountASs + 1 >= handleScanning.Length)
+                                            {
+                                                handleNameOfPan = "";
+                                                handleXandOS = "X";
+                                                conditionToNumberCount = "";
+                                                SureMove.Enabled = false;
+                                                ConditionToNonClick = true;
+                                                numberTime = 60;
+                                                time.Stop();
+                                                time.Start();
+                                                timer2.Stop();
+                                              
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        int countSeeIf = 0;
+                                        foreach (Control Conp in JarOfClickingBox.Controls) {
+                                            if (Conp is Panel) {
+                                                foreach (Control conlb in Conp.Controls) {
+                                                    if (conlb.GetType() == typeof(Label)) {
+                                                        if (conlb.Text != "") {
+                                                            countSeeIf++;
+                                                        }
                                                     }
                                                 }
                                             }
-                                            panAI.AccessibleDescription = "DoneSureMove";
+                                        }
+
+                                        if (countSeeIf != 9)
+                                        {
+                                            Panel panUser = (Panel)(JarOfClickingBox.Controls[handleNameOfPan]);
+                                            panUser.AccessibleDescription = "DoneSureMove";
+
+                                            foreach (Panel ScanningPan in JarOfClickingBox.Controls)
+                                            {
+                                                numberConditionScanning++;
+                                                if (ScanningPan.AccessibleName == "")
+                                                {
+                                                    ScanningAddPanel.Add(ScanningPan.Name);
+                                                }
+
+                                                if (JarOfClickingBox.Controls.Count == numberConditionScanning)
+                                                {
+                                                    int randomNumber = random.Next(0, ScanningAddPanel.ToArray().Length - 1);
+                                                    foreach (Panel panF in JarOfClickingBox.Controls)
+                                                    {
+                                                        if (ScanningAddPanel.ToArray()[randomNumber] == panF.Name)
+                                                        {
+                                                            foreach (Label lbs in panF.Controls)
+                                                            {
+                                                                lbs.Text = "O";
+                                                            }
+                                                            panF.AccessibleName = "O";
+                                                            panF.AccessibleDescription = "DoneSureMove";
+                                                        }
+                                                    }
+                                                }
+                                            }
 
                                             handleNameOfPan = "";
                                             conditionToNumberCount = "";
@@ -551,20 +648,20 @@ namespace TickTackToe
                                             time.Stop();
                                             time.Start();
                                             timer2.Stop();
-                                }
-                                else
-                                {
-                                    Panel panUser = (Panel)(JarOfClickingBox.Controls[handleNameOfPan]);
-                                    panUser.AccessibleDescription = "DoneSureMove";
-
-                                    handleNameOfPan = "";
-                                    conditionToNumberCount = "";
-                                    SureMove.Enabled = false;
-                                    ConditionToNonClick = true;
-                                    numberTime = 60;
-                                    time.Stop();
-                                    time.Start();
-                                    timer2.Stop();
+                                        }
+                                        else {
+                                            GameEnded.Visible = true;
+                                            WinnerSee.Text = "Tie";
+                                            Player1.Text = handleUserAndAi[0];
+                                            Player2.Text = handleUserAndAi[1];
+                                            Player1S.Text = handleScore[0].ToString();
+                                            Player2S.Text = handleScore[1].ToString();
+                                            numberTime = 60;
+                                            time.Stop();
+                                            time.Start();
+                                            timer2.Stop();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -611,50 +708,67 @@ namespace TickTackToe
                 }
             }
 
+        }
 
-            int DoLoopEach(int countCheck, int numberCountFinal, int numberCountAS)
+
+        //DELAY WINNER A.I.................................................................
+        private void TimerDelay(object control, EventArgs e) {
+            conditionFinalCatch = "true";
+            handleScore[1]++;
+            WinnerSee.Text = textBox4.Text;
+            Player1.Text = textBox4.Text;
+            Player1S.Text = handleScore[0].ToString();
+            Player2.Text = "A.I";
+            Player2S.Text = handleScore[1].ToString();
+            GameEnded.Visible = true;
+            delay.Stop();
+        }
+
+
+
+
+        private int DoLoopEach(int countCheck, int numberCountFinal, int numberCountAS)
+        {
+            foreach (Panel panel in JarOfClickingBox.Controls)
             {
-                foreach (Panel panel in JarOfClickingBox.Controls)
+                countCheck++;
+                if (handleScanning[numberCountAS, 0] == countCheck && st[numberCountAS, 0] == panel.Name)
                 {
-                    countCheck++;
-                    if (handleScanning[numberCountAS, 0] == countCheck && st[numberCountAS, 0] == panel.Name)
+                    if (panel.AccessibleName != "")
                     {
-                        if (panel.AccessibleName != "")
+                        if (handleXandOS == panel.AccessibleName)
                         {
-                            if (handleXandOS == panel.AccessibleName)
-                            {
-                                numberCountFinal++;
-                            }
+                            numberCountFinal++;
                         }
                     }
-
-
-                    if (handleScanning[numberCountAS, 1] == countCheck && st[numberCountAS, 1] == panel.Name)
-                    {
-                        if (panel.AccessibleName != "")
-                        {
-                            if (handleXandOS == panel.AccessibleName)
-                            {
-                                numberCountFinal++;
-                            }
-                        }
-                    }
-
-                    if (handleScanning[numberCountAS, 2] == countCheck && st[numberCountAS, 2] == panel.Name)
-                    {
-                        if (panel.AccessibleName != "")
-                        {
-                            if (handleXandOS == panel.AccessibleName)
-                            {
-                                numberCountFinal++;
-                            }
-                        }
-                    }
-
                 }
 
-                return numberCountFinal;
+
+                if (handleScanning[numberCountAS, 1] == countCheck && st[numberCountAS, 1] == panel.Name)
+                {
+                    if (panel.AccessibleName != "")
+                    {
+                        if (handleXandOS == panel.AccessibleName)
+                        {
+                            numberCountFinal++;
+                        }
+                    }
+                }
+
+                if (handleScanning[numberCountAS, 2] == countCheck && st[numberCountAS, 2] == panel.Name)
+                {
+                    if (panel.AccessibleName != "")
+                    {
+                        if (handleXandOS == panel.AccessibleName)
+                        {
+                            numberCountFinal++;
+                        }
+                    }
+                }
+
             }
+
+            return numberCountFinal;
         }
 
 
@@ -674,6 +788,7 @@ namespace TickTackToe
                 GameEnded.Visible = false;
                 conditionToAgain = "false";
                 stringHandleCondition = "Start";
+                time.Stop(); timer2.Stop(); delay.Stop();
                 foreach (Control con in JarOfClickingBox.Controls)
                 {
                     if (con.GetType() == typeof(Panel))
@@ -746,6 +861,7 @@ namespace TickTackToe
             GamePanel.Visible = false;
             SureMove.Enabled = false;
             JarOfPlayerSegment.Visible = false;
+            time.Stop(); timer2.Stop(); delay.Stop();
 
             foreach (Control con in JarOfClickingBox.Controls)
             {
@@ -763,11 +879,7 @@ namespace TickTackToe
         }
 
 
-        //PLAYING WITH FRIENDS END.....................................................................
-
-
-
-        //PLAYING WITH A.I START...................................................................
+        //PLAYING WITH FRIENDS END AND A.I.....................................................................
 
 
 

@@ -46,6 +46,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.GamePanel = new System.Windows.Forms.Panel();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.GameEnded = new System.Windows.Forms.Panel();
             this.Exit = new System.Windows.Forms.Button();
             this.PlayAgainss = new System.Windows.Forms.Button();
@@ -86,7 +87,6 @@
             this.label19 = new System.Windows.Forms.Label();
             this.JarOfNameMove = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.PlayingWithFriends.SuspendLayout();
             this.PlayWithAI.SuspendLayout();
@@ -292,6 +292,14 @@
             this.GamePanel.Size = new System.Drawing.Size(302, 342);
             this.GamePanel.TabIndex = 8;
             this.GamePanel.Visible = false;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(102, 11);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.TabIndex = 20;
+            this.textBox4.Visible = false;
             // 
             // GameEnded
             // 
@@ -707,14 +715,6 @@
             this.label16.Size = new System.Drawing.Size(86, 17);
             this.label16.TabIndex = 11;
             this.label16.Text = "Player move:";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(102, 11);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 20;
-            this.textBox4.Visible = false;
             // 
             // TickTackTie
             // 
