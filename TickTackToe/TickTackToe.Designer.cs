@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TickTackTie));
             this.label1 = new System.Windows.Forms.Label();
             this.EraseTheForm = new System.Windows.Forms.Label();
             this.PositionChange = new System.Windows.Forms.Panel();
@@ -728,6 +729,7 @@
             this.Controls.Add(this.EraseTheForm);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TickTackTie";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
